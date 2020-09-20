@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/signup', async (req, res) => {
-    const { name, email, password, dob, ph, ques } = req.body;
+    const { name, email, password, dob, ph, ques } = req.body.user;
     try {
         const salt = await bc.genSalt(10);
         const enc_password = await bc.hash(password, salt);
@@ -37,7 +37,8 @@ router.post('/signup', async (req, res) => {
 })
 
 router.post('/signin', async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password } = req.body.user;
+    console.log(req.body.user)
     try {
         const user = await User.findOne({ email: email });
         if (!user) {
@@ -48,12 +49,12 @@ router.post('/signin', async (req, res) => {
         const pwd = await bc.compare(password, user.password);
         if (!pwd) return res.status(400).json({ error: "Password not valid" });
         const token = await jwt.sign({ id: user._id }, process.env.SECRET);
-        return res.status(200).json({ user: user._id, token: token }).cookie('token', token, { maxAge: (43200 * 1000) });
+        return res.status(200).json({ user: user._id, token: token })
 
     } catch (error) {
         console.log(error);
         res.status(400).json({
-            error: error,
+            error: error.message,
         })
     }
 })

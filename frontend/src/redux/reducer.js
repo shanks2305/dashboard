@@ -41,6 +41,7 @@ const reducer = (state = initState, action) => {
         case SING_IN_COMPLETED:
             return {
                 ...state,
+                error: '',
                 signingIn: false,
                 userData: action.payload
             }

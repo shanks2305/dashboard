@@ -1,4 +1,5 @@
 import env from 'dotenv'
+import axios from 'axios'
 import {
     SING_IN_STARTED,
     SING_IN_COMPLETED,
@@ -10,7 +11,7 @@ import {
 } from './actionTpes'
 
 env.config()
-const api = process.env.API
+const api = 'http://localhost:8000'
 
 export const signInStarted = () => ({
     type: SING_IN_STARTED
@@ -29,16 +30,16 @@ export const signInFailed = (err) => ({
 export const signInUser = (user) => {
     return (dispatch) => {
         dispatch(signInStarted())
-        fetch(`${api}/api/signin`, {
-            method: 'POST',
+        axios.post(`${api}/api/signin`, {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: user
-        }).then((res) => {
+            user
+        }).then(res => {
+            console.log(res)
             dispatch(singInCompleted(res.data))
-        }).catch((err) => {
-            dispatch(signInFailed(err))
+        }).catch(err => {
+            dispatch(signInFailed("Failed to login"))
         })
     }
 }
@@ -59,12 +60,12 @@ export const signUpFailed = (err) => ({
 export const signUpUser = (user) => {
     return (dispatch) => {
         dispatch(signUpStarted())
-        fetch(`${api}/api/signup`, {
+        axios.post(`${api}/api/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: user
+            user
         }).then(res => {
             console.log(res.status)
             dispatch(signUpCompleted())

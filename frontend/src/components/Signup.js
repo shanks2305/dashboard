@@ -37,7 +37,7 @@ const Signup = () => {
                         <button className="btn btn-outline-info w-25 mr-3">Create</button>
 
                         <br />
-                        <span className="mt-3">Already have an account? <Link to="/signup">Login</Link></span>
+                        <span className="mt-3">Already have an account? <Link to="/signin">Login</Link></span>
                     </form>
                 </div>
             </div>
