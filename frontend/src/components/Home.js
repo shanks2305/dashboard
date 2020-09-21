@@ -1,19 +1,46 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { singInCompleted, logout } from '../redux/action'
+import Header from './Header'
+import Nav from './Nav'
+import Body from './Body'
 
-const Home = () => {
+const Home = (props) => {
 
-    const [loggedIn, setLoggedIn] = useState(false)
+    useEffect(() => {
+        if (localStorage.getItem('user')) {
+            const user = JSON.parse(localStorage.getItem('user'))
+            props.allreadySignedIn(user)
+        }
+    })
 
-    return loggedIn ? (
+    const userLogout = () => {
+        if (localStorage.getItem('user')) {
+            localStorage.removeItem('user')
+            props.logout()
+        }
+    }
+
+    return props.loggedIn ? (
         <div>
-            <h1>
-                Dashboard
-            </h1>
+            <Header />
+            <Nav />
+            <Body />
         </div>
     ) : (<Redirect to='/signin' />)
 
 
 }
 
-export default Home
+const mapStateToProps = (state) => ({
+    user: state.userData,
+    loggedIn: state.userStatus
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    allreadySignedIn: (user) => dispatch(singInCompleted(user)),
+    logout: () => dispatch(logout())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

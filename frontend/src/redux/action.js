@@ -36,7 +36,7 @@ export const signInUser = (user) => {
             },
             user
         }).then(res => {
-            console.log(res)
+            localStorage.setItem('user', JSON.stringify(res.data))
             dispatch(singInCompleted(res.data))
         }).catch(err => {
             dispatch(signInFailed("Failed to login"))

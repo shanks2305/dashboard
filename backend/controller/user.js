@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/signup', async (req, res) => {
-    const { name, email, password, dob, ph, ques } = req.body.user;
+    const { name, email, password, dob, ph } = req.body.user;
     try {
         const salt = await bc.genSalt(10);
         const enc_password = await bc.hash(password, salt);
@@ -20,7 +20,6 @@ router.post('/signup', async (req, res) => {
             password: enc_password,
             dob: dob,
             contact: ph,
-            ques: ques
         });
         const saveUser = await user.save();
         if (saveUser) {

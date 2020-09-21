@@ -9,6 +9,7 @@ import {
 } from './actionTpes'
 
 const initState = {
+    userStatus: false,
     creatingUser: false,
     signingIn: false,
     error: ''
@@ -41,6 +42,7 @@ const reducer = (state = initState, action) => {
         case SING_IN_COMPLETED:
             return {
                 ...state,
+                userStatus: true,
                 error: '',
                 signingIn: false,
                 userData: action.payload
@@ -53,6 +55,7 @@ const reducer = (state = initState, action) => {
             }
         case USER_LOGOUT:
             return {
+                userStatus: false,
                 creatingUser: false,
                 signingIn: false,
                 error: ''
