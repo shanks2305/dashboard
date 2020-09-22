@@ -1,4 +1,5 @@
 import env from 'dotenv'
+import { toast } from 'react-toastify'
 import axios from 'axios'
 import {
     SING_IN_STARTED,
@@ -38,7 +39,9 @@ export const signInUser = (user) => {
         }).then(res => {
             localStorage.setItem('user', JSON.stringify(res.data))
             dispatch(singInCompleted(res.data))
+            toast("Logged In!")
         }).catch(err => {
+            toast("Failed to login!")
             dispatch(signInFailed("Failed to login"))
         })
     }
@@ -67,9 +70,10 @@ export const signUpUser = (user) => {
             },
             user
         }).then(res => {
-            console.log(res.status)
+            toast("User Created")
             dispatch(signUpCompleted())
         }).catch(err => {
+            toast("Failed to create user")
             dispatch(signUpFailed(err))
         })
     }

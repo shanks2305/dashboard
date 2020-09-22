@@ -16,6 +16,7 @@ mongoose.connect(process.env.DB,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false
   })
   .then(() => {
     console.log('CONNECTED TO DB');
@@ -30,7 +31,7 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
 
-app.use('/api',userRoutes);
+app.use('/api', userRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log('Connected To Port');

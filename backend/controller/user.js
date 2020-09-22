@@ -2,6 +2,7 @@ const router = require('express').Router();
 const bc = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../model/user');
+const nodemailer = require('nodemailer');
 
 const { isAuthenticated } = require('../middlewar');
 
@@ -48,7 +49,7 @@ router.post('/signin', async (req, res) => {
         const pwd = await bc.compare(password, user.password);
         if (!pwd) return res.status(400).json({ error: "Password not valid" });
         const token = await jwt.sign({ id: user._id }, process.env.SECRET);
-        return res.status(200).json({ user: user._id, token: token })
+        return res.status(200).json({ user: user._id, token: token, name: user.name })
 
     } catch (error) {
         console.log(error);
@@ -75,5 +76,54 @@ router.get('/user/:uid', isAuthenticated, async (req, res) => {
 
 })
 
+router.post('/forgot-password', async (req, res) => {
+    const email = req.body.email;
+    User.findOne({ email }, (err, user) => {
+        if (err || !user) {
+            return res.status(400).json({ error: "No user registered to entered E-mail" });
+        }
+        try {
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: 'shankeybahuguna0@gmail.com',
+                    pass: process.env.EPASSWORD
+                }
+            });
+
+            const mailOptions = {
+                from: 'shankeybahuguna0@gmail.com',
+                to: email,
+                subject: 'Password Reset link',
+                text: `To reset your password : ${process.env.CLIENT}/reset-password/${user._id}`
+            };
+
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+        } catch (error) {
+            return res.status(400).json({ error: error })
+        }
+
+
+    })
+})
+
+router.put('/reset-password', async (req, res) => {
+    const token = req.body.token;
+    const password = req.body.password;
+    try {
+        const salt = await bc.genSalt(10);
+        const enc_password = await bc.hash(password, salt);
+        const user = await User.findByIdAndUpdate(token, { password: enc_password });
+    } catch (error) {
+        return res.status(400).json({ error: "Failed to update user" })
+    }
+    return res.status(200).json({ message: "Successfully Reset the password" })
+})
 
 module.exports = router;

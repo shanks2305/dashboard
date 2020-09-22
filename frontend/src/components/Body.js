@@ -1,13 +1,13 @@
 import React from 'react'
-
+import AreaChart from './AreaChart'
+import Carddeck from './Carddeck'
+import UserTable from './UserTable'
 const Body = () => {
     return (
-        <div className="container bg-dark">
-            <div className="row">
-                <div className="col-md-6">
-                    
-                </div>
-            </div>
+        <div className="container">
+            <Carddeck />
+            <AreaChart />
+            <UserTable />
         </div>
     )
 }
