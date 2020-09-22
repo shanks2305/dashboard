@@ -15,3 +15,7 @@ Registration Columns :
 • Date of Birth
 • Password
 After login success proceed to Dashboard
+
+Steps to run:-
+Goto frontend dir and run "npm i" and "npm start"
+and for backend use the same command in backend folder
