@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path')
 
 const userRoutes = require('./controller/user');
 
@@ -32,7 +33,14 @@ app.use(helmet());
 app.use(morgan('dev'));
 
 app.use('/api', userRoutes);
-
+/*
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('frontend/build'))
+  app.get('/', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+  })
+}
+*/
 app.listen(process.env.PORT, () => {
   console.log('Connected To Port');
 });
