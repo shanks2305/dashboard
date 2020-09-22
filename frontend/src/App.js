@@ -5,7 +5,6 @@ import { Provider } from 'react-redux'
 import logger from 'redux-logger'
 import thunk from 'redux-thunk'
 import reducer from './redux/reducer'
-import api from './api'
 import { ToastContainer } from "react-toastify"
 
 const store = createStore(reducer, applyMiddleware(logger, thunk))
