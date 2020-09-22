@@ -2,6 +2,7 @@ import Axios from 'axios'
 import React, { useState } from 'react'
 import { Redirect, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import API from '../api'
 
 
 const ResetPassword = () => {
@@ -18,7 +19,7 @@ const ResetPassword = () => {
         e.preventDefault()
         const { password, cPassword } = state
         if (password === cPassword) {
-            Axios.put('http://localhost:8000/api/reset-password', {
+            Axios.put(`${API}/api/reset-password`, {
                 headers: {
                     'Content-Type': 'application/Json',
                 },

@@ -1,5 +1,6 @@
 import Axios from 'axios'
 import React, { useState } from 'react'
+import API from '../api'
 import { Redirect } from 'react-router-dom'
 
 const Forgotpassword = () => {
@@ -12,7 +13,7 @@ const Forgotpassword = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         const em = state.email
-        Axios.post('http://localhost:8000/api/forgot-password',
+        Axios.post(`${API}/api/forgot-password`,
             {
                 headers: {
                     'Content-Type': 'application/json',

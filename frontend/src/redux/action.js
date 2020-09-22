@@ -1,6 +1,6 @@
-import env from 'dotenv'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import API from '../api'
 import {
     SING_IN_STARTED,
     SING_IN_COMPLETED,
@@ -11,8 +11,8 @@ import {
     USER_LOGOUT
 } from './actionTpes'
 
-env.config()
-const api = 'http://localhost:8000'
+
+const api = API
 
 export const signInStarted = () => ({
     type: SING_IN_STARTED
